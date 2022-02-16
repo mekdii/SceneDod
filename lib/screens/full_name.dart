@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:scene/controller/user_controller.dart';
 
 import 'show_report.dart';
 
-class FullName extends StatelessWidget {
-  final String user;
-  FullName({Key key, this.user}) : super(key: key);
-  final Map<String, dynamic> _user = {};
-
+class FullName extends GetView {
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  final UserController controller = Get.put(UserController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,8 +18,10 @@ class FullName extends StatelessWidget {
         actions: [
           IconButton(
               icon: Icon(Icons.check),
-              onPressed: () {
-             
+              onPressed: () async {
+                if (_key.currentState.validate()) {
+                  controller.postChange();
+                }
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => HomeScreen()));
               })
@@ -25,23 +29,28 @@ class FullName extends StatelessWidget {
       ),
       body: Column(
         children: [
-          TextFormField(
-              maxLength: 20,
-              initialValue: user,
-              decoration: const InputDecoration(
-                icon: Icon(Icons.person),
-                //hintText: 'discreption about the user?',
-                labelText: 'fullname *',
-              ),
-              validator: (val) {
-                if (val.isEmpty) {
-                  return 'Please insert fullname';
-                }
-                return null;
-              },
-              onChanged: (val) {
-                this._user['userName'] = val;
-              }),
+          Form(
+            key: _key,
+            child: TextFormField(
+                maxLength: 20,
+                initialValue: controller.username.value,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.person),
+                  //hintText: 'discreption about the user?',
+                  labelText: 'fullname *',
+                ),
+                validator: (val) {
+                  if (val.isEmpty) {
+                    return 'Please insert fullname';
+                  }
+                  return null;
+                },
+                onChanged: (val) {
+                  print("...........VV.............." +
+                      controller.username.value);
+                  controller.username.value = val;
+                }),
+          ),
           SizedBox(
             height: 20.0,
           ),
@@ -58,7 +67,7 @@ class FullName extends StatelessWidget {
   }
 
   // void _saveusername(BuildContext context) {
- 
+
   //   );
 
 }

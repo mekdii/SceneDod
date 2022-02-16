@@ -72,11 +72,10 @@ class _MyProfileState extends State<MyProfile> {
                         "assets/images/castprofile.png",
                         width: MediaQuery.of(context).size.width,
                       ))
-                 
                 ],
               ),
             ),
-          
+
             Positioned.fill(
               child: Align(
                   alignment: Alignment.topLeft,
@@ -127,8 +126,8 @@ class _MyProfileState extends State<MyProfile> {
   makeemail(IconData icon, String text, String text2) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => FullName(user: text)));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => FullName()));
       },
       child: Card(
         child: Padding(
